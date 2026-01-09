@@ -17,6 +17,11 @@ class ParticipantId:
     value: str
 
 
+@dataclass(frozen=True)
+class QuestionId:
+    value: str
+
+
 class SessionState(enum.StrEnum):
     WAITING = 'waiting'
     COMPLETED = 'completed'
@@ -27,3 +32,6 @@ class Preference(enum.StrEnum):
     LIKE = 'like'
     DISLIKE = 'dislike'
     NEUTRAL = 'neutral'
+
+
+Answers = dict[QuestionId, Preference]

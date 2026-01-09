@@ -1,9 +1,7 @@
 from typing import Protocol
 
 from backend.domain.result.entities import Result
-from backend.domain.session.value_objects import Preference
-
-Answers = dict[str, Preference]
+from backend.domain.session.value_objects import Answers, Preference
 
 
 class ResultCalculator(Protocol):

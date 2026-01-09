@@ -5,7 +5,7 @@ from backend.domain.session.value_objects import Answers, Preference
 
 
 class ResultCalculator(Protocol):
-    def calculate(self, answers_1: Answers, answers_2: Answers): ...
+    def calculate(self, answers_1: Answers, answers_2: Answers) -> Result: ...
 
 
 class SimpleResultsCalculator:
@@ -19,7 +19,7 @@ class SimpleResultsCalculator:
             return 0
         return round(len(common) / total * 100)
 
-    def calculate(self, answers_1: Answers, answers_2: Answers):
+    def calculate(self, answers_1: Answers, answers_2: Answers) -> Result:
         common = []
         difference = []
 

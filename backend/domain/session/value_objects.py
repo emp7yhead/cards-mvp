@@ -1,3 +1,4 @@
+import enum
 from dataclasses import dataclass
 
 
@@ -15,3 +16,14 @@ class TopicId:
 class ParticipantId:
     value: str
 
+
+class SessionState(enum.StrEnum):
+    WAITING = 'waiting'
+    COMPLETED = 'completed'
+    EXPIRED = 'expired'
+
+
+class Preference(enum.StrEnum):
+    LIKE = 'like'
+    DISLIKE = 'dislike'
+    NEUTRAL = 'neutral'

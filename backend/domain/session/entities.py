@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from enum import StrEnum
 
 from backend.domain.session.errors import (
     ParticipantAlreadyAnswered,
@@ -15,11 +14,6 @@ from backend.domain.session.value_objects import (
 )
 
 PARTICIPANTS_LIMIT = 2
-
-class SessionState(StrEnum):
-    WAITING = 'waiting'
-    COMPLETED = 'completed'
-    EXPIRED = 'expired'
 
 
 @dataclass

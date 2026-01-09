@@ -68,3 +68,6 @@ class Session:
         if self._all_answered():
             self.state = SessionState.COMPLETED
 
+    def is_completed(self):
+        return self.state == SessionState.COMPLETED
+

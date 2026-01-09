@@ -5,7 +5,6 @@ import pytest
 from backend.domain.session.entities import (
     PARTICIPANTS_LIMIT,
     Session,
-    SessionState,
 )
 from backend.domain.session.errors import (
     ParticipantAlreadyAnswered,
@@ -14,6 +13,7 @@ from backend.domain.session.errors import (
     TooManyParticipants,
     UnknownParticipant,
 )
+from backend.domain.session.value_objects import SessionState
 
 TEST_PARTICIPANT_1 = 'biba'
 TEST_PARTICIPANT_2 = 'boba'

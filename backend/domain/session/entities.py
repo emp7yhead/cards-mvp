@@ -10,6 +10,7 @@ from backend.domain.session.errors import (
 from backend.domain.session.value_objects import (
     ParticipantId,
     SessionId,
+    SessionState,
     TopicId,
 )
 

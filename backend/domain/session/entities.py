@@ -27,8 +27,8 @@ class Session:
     id: SessionId
     topic: TopicId
     topics_version: int
-    state: SessionState = SessionState.WAITING
     created_at: int
+    state: SessionState = SessionState.WAITING
     participants: dict[ParticipantId, dict] = field(default_factory=dict)
 
     def _assert_active(self):

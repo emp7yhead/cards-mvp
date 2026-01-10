@@ -22,3 +22,9 @@ class GetResultResponse(BaseModel):
 class CreateSessionResponse(BaseModel):
     session_id: str
     participant_id: str
+
+
+class JoinSessionResponse(BaseModel):
+    session_id: str
+    participant_id: str
+

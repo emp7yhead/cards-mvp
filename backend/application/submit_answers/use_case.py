@@ -27,7 +27,7 @@ class SubmitAnswersUseCase:
         )
         self._session_repo.save(session)
         if session.is_completed():
-            result = self._calc.calculate(session.participants.values())
+            result = self._calc.calculate(*session.participants.values())
             self._result_repo.save(result)
         return SubmitAnswersResult(
             session_completed=session.is_completed(),

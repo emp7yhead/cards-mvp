@@ -7,12 +7,15 @@ from fastapi import APIRouter, Depends, HTTPException
 from backend.app.dependencies import (
     get_create_session_uc,
     get_get_answers_uc,
+    get_join_session_uc,
     get_submit_answers_uc,
 )
 from backend.application.create_session.use_case import CreateSessionUseCase
 from backend.application.errors import ResultNotFound, SessionNotFound
 from backend.application.get_result.query import GetResultQuery
 from backend.application.get_result.use_case import GetResultUseCase
+from backend.application.join_session.command import JoinSessionCommand
+from backend.application.join_session.use_case import JoinSessionUseCase
 from backend.application.submit_answers.command import SubmitAnswersCommand
 from backend.application.submit_answers.use_case import SubmitAnswersUseCase
 from backend.domain.session.errors import SessionCompleted, UnknownParticipant
@@ -25,6 +28,7 @@ from backend.domain.session.value_objects import (
 from backend.interfaces.http.sessions.schemas import (
     CreateSessionResponse,
     GetResultResponse,
+    JoinSessionResponse,
     SubmitAnswersRequest,
     SubmitAnswersResponse,
 )
@@ -48,6 +52,25 @@ def create_session(
 
     return CreateSessionResponse(
         session_id=session_id.value,
+        participant_id=participant_id.value,
+    )
+
+
+@router.post("/{session_id}/join")
+async def join_session(
+    session_id: str,
+    uc: Annotated[JoinSessionUseCase, Depends(get_join_session_uc)],
+
+):
+    participant_id = ParticipantId.generate()
+    cmd = JoinSessionCommand(
+        session_id=SessionId(session_id),
+        participant_id=participant_id,
+    )
+    uc.execute(cmd)
+
+    return JoinSessionResponse(
+        session_id=session_id,
         participant_id=participant_id.value,
     )
 

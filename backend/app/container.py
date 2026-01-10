@@ -1,5 +1,6 @@
 from backend.application.create_session.use_case import CreateSessionUseCase
 from backend.application.get_result.use_case import GetResultUseCase
+from backend.application.join_session.use_case import JoinSessionUseCase
 from backend.application.submit_answers.use_case import SubmitAnswersUseCase
 from backend.domain.result.calculator import SimpleResultsCalculator
 from backend.infrastructure.redis.result_repository import RedisResultRepository
@@ -23,3 +24,5 @@ get_answers_uc = GetResultUseCase(
 )
 
 create_session_uc = CreateSessionUseCase(session_repo=session_repo)
+
+join_session_uc = JoinSessionUseCase(session_repo=session_repo)

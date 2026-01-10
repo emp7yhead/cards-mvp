@@ -1,9 +1,15 @@
+from time import time
 from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException
 
-from backend.app.dependencies import get_get_answers_uc, get_submit_answers_uc
+from backend.app.dependencies import (
+    get_create_session_uc,
+    get_get_answers_uc,
+    get_submit_answers_uc,
+)
+from backend.application.create_session.use_case import CreateSessionUseCase
 from backend.application.errors import ResultNotFound, SessionNotFound
 from backend.application.get_result.query import GetResultQuery
 from backend.application.get_result.use_case import GetResultUseCase
@@ -14,14 +20,36 @@ from backend.domain.session.value_objects import (
     ParticipantId,
     Preference,
     SessionId,
+    TopicId,
 )
 from backend.interfaces.http.sessions.schemas import (
+    CreateSessionResponse,
     GetResultResponse,
     SubmitAnswersRequest,
     SubmitAnswersResponse,
 )
 
 router = APIRouter(prefix='/sessions', tags=['session'])
+
+@router.post('/')
+def create_session(
+    uc: Annotated[CreateSessionUseCase, Depends(get_create_session_uc)],
+) -> CreateSessionResponse:
+    session_id = SessionId.generate()
+    participant_id = ParticipantId.generate()
+
+    uc.execute(
+        session_id=session_id,
+        topic=TopicId("music"),
+        topics_version=3,
+        creator_id=participant_id,
+        created_at=int(time()),
+    )
+
+    return CreateSessionResponse(
+        session_id=session_id.value,
+        participant_id=participant_id.value,
+    )
 
 
 @router.post('/{session_id}/answers')

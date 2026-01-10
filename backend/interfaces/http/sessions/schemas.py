@@ -17,3 +17,8 @@ class GetResultResponse(BaseModel):
     common_questions: list[str]
     different_questions: list[str]
     score: int
+
+
+class CreateSessionResponse(BaseModel):
+    session_id: str
+    participant_id: str

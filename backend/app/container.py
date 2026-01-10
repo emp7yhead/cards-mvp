@@ -1,3 +1,4 @@
+from backend.application.create_session.use_case import CreateSessionUseCase
 from backend.application.get_result.use_case import GetResultUseCase
 from backend.application.submit_answers.use_case import SubmitAnswersUseCase
 from backend.domain.result.calculator import SimpleResultsCalculator
@@ -20,3 +21,5 @@ submit_answers_uc = SubmitAnswersUseCase(
 get_answers_uc = GetResultUseCase(
     result_repo=result_repo,
 )
+
+create_session_uc = CreateSessionUseCase(session_repo=session_repo)

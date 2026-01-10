@@ -9,6 +9,7 @@ from backend.domain.session.errors import (
 )
 from backend.domain.session.value_objects import (
     ParticipantId,
+    Preference,
     SessionId,
     SessionState,
     TopicId,
@@ -25,6 +26,28 @@ class Session:
     created_at: int
     state: SessionState = SessionState.WAITING
     participants: dict[ParticipantId, dict] = field(default_factory=dict)
+
+    @classmethod
+    def restore(
+        cls,
+        *,
+        session_id: SessionId,
+        topic: TopicId,
+        topics_version: int,
+        created_at: int,
+        state: SessionState,
+        participants: dict[ParticipantId, dict[str, Preference]],
+    ) -> "Session":
+        session = cls.__new__(cls)
+
+        session.id = session_id
+        session.topic = topic
+        session.topics_version = topics_version
+        session.created_at = created_at
+        session.state = state
+        session.participants = participants
+
+        return session
 
     def _assert_active(self):
         if self.state == SessionState.COMPLETED:
@@ -45,6 +68,8 @@ class Session:
         )
 
     def expire(self):
+        if self.state == SessionState.COMPLETED:
+            return None
         self.state = SessionState.EXPIRED
 
     def join(self, participant_id: ParticipantId):

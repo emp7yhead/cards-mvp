@@ -1,10 +1,20 @@
 import enum
 from dataclasses import dataclass
+from uuid import uuid4
 
 
 @dataclass(frozen=True)
 class SessionId:
     value: str
+
+    @staticmethod
+    def generate() -> 'SessionId':
+        return SessionId(str(uuid4()))
+
+    def __post_init__(self):
+        if not self.value:
+            raise ValueError('SessionId cannot be empty')
+
 
 
 @dataclass(frozen=True)
@@ -15,6 +25,14 @@ class TopicId:
 @dataclass(frozen=True)
 class ParticipantId:
     value: str
+
+    @staticmethod
+    def generate() -> 'ParticipantId':
+        return ParticipantId(str(uuid4()))
+
+    def __post_init__(self):
+        if not self.value:
+            raise ValueError('ParticipantId cannot be empty')
 
 
 @dataclass(frozen=True)

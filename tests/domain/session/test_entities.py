@@ -13,11 +13,11 @@ from backend.domain.session.errors import (
     TooManyParticipants,
     UnknownParticipant,
 )
-from backend.domain.session.value_objects import SessionState
+from backend.domain.session.value_objects import ParticipantId, SessionState
 
-TEST_PARTICIPANT_1 = 'biba'
-TEST_PARTICIPANT_2 = 'boba'
-TEST_PARTICIPANT_3 = 'buba'
+TEST_PARTICIPANT_1 = ParticipantId('biba')
+TEST_PARTICIPANT_2 = ParticipantId('boba')
+TEST_PARTICIPANT_3 = ParticipantId('buba')
 
 @pytest.fixture
 def test_session():

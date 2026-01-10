@@ -1,37 +1,45 @@
 from backend.domain.result.entities import Result
 from backend.domain.session.entities import Session
-from backend.domain.session.value_objects import Preference
+from backend.domain.session.value_objects import (
+    ParticipantId,
+    Preference,
+    SessionId,
+    TopicId,
+)
 
 
 def session_to_dict(session: Session) -> dict:
-    return {
-        "id": session.id.value,
-        "participants": list(session.participants),
-        "answers": {
-            pid: {
-                qid: pref.value
-                for qid, pref in answers.items()
+    payload = {
+        "session_id": session.id.value,
+        "topic": session.topic.value,
+        "topics_version": session.topics_version,
+        "created_at": session.created_at,
+        "state": session.state,
+        "participants": {
+            pid.value: {
+                key: pref.name
+                for key, pref in answers.items()
             }
-            for pid, answers in session.answers.items()
+            for pid, answers in session.participants.items()
         },
-        "completed": session.is_completed(),
     }
+
+    return payload
 
 
 def session_from_dict(data: dict) -> Session:
     session = Session.restore(
-        session_id=data["id"],
-        participants=data["participants"],
+        session_id = SessionId(data['session_id']),
+        topic = TopicId(data['topic']),
+        topics_version = data['topics_version'],
+        created_at = data['created_at'],
+        state = data['state'],
+        participants = {
+            ParticipantId(k): {
+                q: Preference[p] for q, p in v.items()
+            } for k, v in data['participants'].items()
+        },
     )
-    for pid, answers in data["answers"].items():
-        session.submit_answers(
-            pid,
-            {
-                question: Preference(preference)
-                for question, preference
-                in answers.items()
-            },
-        )
     return session
 
 

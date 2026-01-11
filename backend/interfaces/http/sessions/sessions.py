@@ -60,8 +60,7 @@ def create_session(
 async def join_session(
     session_id: str,
     uc: Annotated[JoinSessionUseCase, Depends(get_join_session_uc)],
-
-):
+) -> JoinSessionResponse:
     participant_id = ParticipantId.generate()
     cmd = JoinSessionCommand(
         session_id=SessionId(session_id),
@@ -117,7 +116,7 @@ def get_results(
     uc: Annotated[GetResultUseCase, Depends(get_get_answers_uc)],
 ) -> GetResultResponse:
     query = GetResultQuery(
-        session_id=session_id,
+        session_id=SessionId(str(session_id)),
     )
     try:
         res = uc.execute(query)

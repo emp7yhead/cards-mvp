@@ -15,7 +15,7 @@ class RedisResultRepository:
         self._redis = get_client()
 
     def _key(self, session_id: SessionId) -> str:
-        return f"result:{session_id}"
+        return f"result:{session_id.value}"
 
     def save(self, result: Result) -> None:
         key = self._key(result.session_id)

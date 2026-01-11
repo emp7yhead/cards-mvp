@@ -13,7 +13,7 @@ class GetResultUseCase:
         if not res:
             raise ResultNotFound(query.session_id)
         return GetResultResult(
-            session_id=query.session_id,
+            session_id=res.session_id,
             common_questions=res.common,
             different_questions=res.difference,
             score=res.score,

@@ -46,14 +46,16 @@ def session_from_dict(data: dict) -> Session:
 def result_to_dict(result: Result) -> dict:
     return {
         "session_id": result.session_id.value,
-        "common_questions": result.common_questions,
+        "common_questions": result.common,
+        "difference_questions": result.difference,
         "score": result.score,
     }
 
 
 def result_from_dict(data: dict) -> Result:
     return Result(
-        session_id=data["session_id"],
-        common_questions=data["common_questions"],
+        session_id=SessionId(data["session_id"]),
+        common=data["common_questions"],
+        difference=data["difference_questions"],
         score=data["score"],
     )

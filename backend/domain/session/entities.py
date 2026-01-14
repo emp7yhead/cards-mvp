@@ -22,7 +22,7 @@ PARTICIPANTS_LIMIT = 2
 class Session:
     id: SessionId
     topic: TopicId
-    topics_version: int
+    topics_version: str
     created_at: int
     state: SessionState = SessionState.WAITING
     participants: dict[ParticipantId, dict] = field(default_factory=dict)
@@ -33,7 +33,7 @@ class Session:
         *,
         session_id: SessionId,
         topic: TopicId,
-        topics_version: int,
+        topics_version: str,
         created_at: int,
         state: SessionState,
         participants: dict[ParticipantId, dict[str, Preference]],

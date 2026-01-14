@@ -23,6 +23,11 @@ class TopicId:
 
 
 @dataclass(frozen=True)
+class TopicVersion:
+    value: str
+
+
+@dataclass(frozen=True)
 class ParticipantId:
     value: str
 

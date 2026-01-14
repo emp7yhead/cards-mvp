@@ -28,3 +28,7 @@ class JoinSessionResponse(BaseModel):
     session_id: str
     participant_id: str
 
+
+class CreateSessionTopicRequest(BaseModel):
+    topic_id: str
+    version: str

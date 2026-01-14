@@ -27,6 +27,7 @@ from backend.domain.session.value_objects import (
 )
 from backend.interfaces.http.sessions.schemas import (
     CreateSessionResponse,
+    CreateSessionTopicRequest,
     GetResultResponse,
     JoinSessionResponse,
     SubmitAnswersRequest,
@@ -37,15 +38,16 @@ router = APIRouter(prefix='/sessions', tags=['session'])
 
 @router.post('/')
 def create_session(
+    payload: CreateSessionTopicRequest,
     uc: Annotated[CreateSessionUseCase, Depends(get_create_session_uc)],
 ) -> CreateSessionResponse:
-    session_id = SessionId.generate()
-    participant_id = ParticipantId.generate()
+    session_id: SessionId = SessionId.generate()
+    participant_id: ParticipantId = ParticipantId.generate()
 
     uc.execute(
         session_id=session_id,
-        topic=TopicId("music"),
-        topics_version=3,
+        topic=TopicId(payload.topic_id),
+        topics_version=payload.version,
         creator_id=participant_id,
         created_at=int(time()),
     )
@@ -121,10 +123,10 @@ def get_results(
     try:
         res = uc.execute(query)
     except ResultNotFound as e:
-        raise HTTPException(
+        return HTTPException(
             status_code=404,
             detail='Results not found',
-        ) from e
+        )
     return GetResultResponse(
             session_id=session_id,
             common_questions=res.common_questions,

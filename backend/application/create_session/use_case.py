@@ -17,7 +17,7 @@ class CreateSessionUseCase:
         *,
         session_id: SessionId,
         topic: TopicId,
-        topics_version: int,
+        topics_version: str,
         creator_id: ParticipantId,
         created_at: int,
     ) -> None:

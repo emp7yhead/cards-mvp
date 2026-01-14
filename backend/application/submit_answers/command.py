@@ -12,3 +12,6 @@ class SubmitAnswersCommand:
     session_id: SessionId
     participant_id: ParticipantId
     answers: Answers
+
+    def get_questions_ids(self):
+        return self.answers.keys()

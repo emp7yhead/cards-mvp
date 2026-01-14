@@ -1,9 +1,10 @@
-from backend.application.errors import SessionNotFound
+from backend.application.errors import InvalidQuestion, SessionNotFound
 from backend.application.ports.result_repository import ResultRepository
 from backend.application.submit_answers.command import SubmitAnswersCommand
 from backend.application.submit_answers.result import SubmitAnswersResult
 from backend.domain.result.calculator import ResultCalculator
 from backend.domain.session.repository import SessionRepository
+from backend.domain.topic.repository import TopicRepository
 
 
 class SubmitAnswersUseCase:
@@ -12,15 +13,24 @@ class SubmitAnswersUseCase:
         session_repo: SessionRepository,
         calc: ResultCalculator,
         result_repo: ResultRepository,
+        topic_repo: TopicRepository,
     ):
         self._session_repo = session_repo
         self._calc = calc
         self._result_repo = result_repo
+        self._topic_repo = topic_repo
+
+    def _assert_valid(self, topic, questions):
+        for qid in questions:
+            if not topic.has_question(qid):
+                raise InvalidQuestion
 
     def execute(self, cmd: SubmitAnswersCommand):
         session = self._session_repo.get(cmd.session_id)
         if not session:
             raise SessionNotFound
+        topic = self._topic_repo.get(session.topic, session.topics_version)
+        self._assert_valid(topic, cmd.answers.get_questions_ids())
         session.submit_answers(
             participant_id=cmd.participant_id,
             answers=cmd.answers,

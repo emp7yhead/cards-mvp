@@ -29,7 +29,7 @@ class TopicRedisRepository(TopicRepository):
         return TopicRedisSerializer.loads(raw)
 
     def save(self, topic: Topic) -> None:
-        await self._redis.set(
+        self._redis.set(
             self._key(topic.id, topic.version),
             TopicRedisSerializer.dumps(topic),
             ex=self._ttl,

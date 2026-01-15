@@ -92,21 +92,21 @@ def submit_answers(
     )
     try:
         res = uc.execute(cmd)
-    except SessionCompleted as e:
-        raise HTTPException(
+    except SessionCompleted:
+        return HTTPException(
             status_code=409,
             detail='Session alredy completed',
-        ) from e
-    except UnknownParticipant as e:
-        raise HTTPException(
+        )
+    except UnknownParticipant:
+        return HTTPException(
             status_code=404,
             detail='Unknown participant',
-        ) from e
-    except SessionNotFound as e:
-        raise HTTPException(
+        )
+    except SessionNotFound:
+        return HTTPException(
             status_code=404,
             detail='Session not found',
-        ) from e
+        )
     return SubmitAnswersResponse(
         session_completed=res.session_completed,
     )
@@ -122,7 +122,7 @@ def get_results(
     )
     try:
         res = uc.execute(query)
-    except ResultNotFound as e:
+    except ResultNotFound:
         return HTTPException(
             status_code=404,
             detail='Results not found',

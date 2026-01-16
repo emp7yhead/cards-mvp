@@ -24,7 +24,7 @@ def test_session():
     return Session(
         id='test',
         topic='test',
-        topics_version=datetime.now(),
+        topic_version=datetime.now(),
         created_at=datetime.now(),
     )
 

@@ -17,12 +17,12 @@ class TopicRedisRepository(TopicRepository):
     def get(
         self,
         topic_id: TopicId,
-        version: TopicVersion | None = None,
+        topic_version: TopicVersion | None = None,
     ) -> Topic | None:
-        if version is None:
+        if topic_version is None:
             return None
 
-        raw = self._redis.get(self._key(topic_id, version))
+        raw = self._redis.get(self._key(topic_id, topic_version))
         if not raw:
             return None
 

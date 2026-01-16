@@ -20,8 +20,10 @@ from backend.application.submit_answers.use_case import SubmitAnswersUseCase
 from backend.domain.session.value_objects import (
     ParticipantId,
     Preference,
+    QuestionId,
     SessionId,
     TopicId,
+    TopicVersion,
 )
 from backend.interfaces.http.sessions.schemas import (
     CreateSessionResponse,
@@ -44,8 +46,8 @@ def create_session(
 
     uc.execute(
         session_id=session_id,
-        topic=TopicId(payload.topic_id),
-        topics_version=payload.version,
+        topic_id=TopicId(payload.topic_id),
+        topic_version=TopicVersion(payload.version),
         creator_id=participant_id,
         created_at=int(time()),
     )
@@ -83,7 +85,7 @@ def submit_answers(
         session_id=SessionId(str(session_id)),
         participant_id=ParticipantId(str(payload.participant_id)),
         answers={
-            question: Preference(preference)
+            QuestionId(question): Preference(preference)
             for question, preference in payload.answers.items()
         },
     )
@@ -104,7 +106,7 @@ def get_results(
     res = uc.execute(query)
     return GetResultResponse(
             session_id=session_id,
-            common_questions=res.common_questions,
-            different_questions=res.different_questions,
+            common_questions=[q.value for q in res.common_questions],
+            different_questions=[q.value for q in res.different_questions],
             score=res.score,
         )

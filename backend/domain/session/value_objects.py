@@ -2,6 +2,8 @@ import enum
 from dataclasses import dataclass
 from uuid import uuid4
 
+from backend.domain.topic.value_objects import QuestionId, TopicId, TopicVersion
+
 
 @dataclass(frozen=True)
 class SessionId:
@@ -16,17 +18,6 @@ class SessionId:
             raise ValueError('SessionId cannot be empty')
 
 
-
-@dataclass(frozen=True)
-class TopicId:
-    value: str
-
-
-@dataclass(frozen=True)
-class TopicVersion:
-    value: str
-
-
 @dataclass(frozen=True)
 class ParticipantId:
     value: str
@@ -38,11 +29,6 @@ class ParticipantId:
     def __post_init__(self):
         if not self.value:
             raise ValueError('ParticipantId cannot be empty')
-
-
-@dataclass(frozen=True)
-class QuestionId:
-    value: str
 
 
 class SessionState(enum.StrEnum):

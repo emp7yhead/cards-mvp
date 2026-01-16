@@ -33,7 +33,10 @@ async def init_container(app: FastAPI):
     )
 
     container.get_answers_uc = GetResultUseCase(container.result_repo)
-    container.create_session_uc = CreateSessionUseCase(container.session_repo)
+    container.create_session_uc = CreateSessionUseCase(
+        container.session_repo,
+        container.topic_yaml_repo,
+    )
     container.join_session_uc = JoinSessionUseCase(container.session_repo)
 
     container.get_topic_uc = GetTopicUseCase(

@@ -26,7 +26,7 @@ class TopicYamlRepository(TopicRepository):
     def get(
         self,
         topic_id: TopicId,
-        version: TopicVersion | None = None,
+        topic_version: TopicVersion | None = None,
     ) -> Topic | None:
         path = self._base_path / f"{topic_id.value}.yaml"
 
@@ -38,7 +38,7 @@ class TopicYamlRepository(TopicRepository):
 
         topic = TopicYamlSerializer.loads(data)
 
-        if version and topic.version != version:
+        if topic_version.value and topic.version != topic_version:
             return None
 
         return topic

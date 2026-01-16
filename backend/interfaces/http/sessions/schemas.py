@@ -31,4 +31,4 @@ class JoinSessionResponse(BaseModel):
 
 class CreateSessionTopicRequest(BaseModel):
     topic_id: str
-    version: str
+    version: str | None = None

@@ -13,6 +13,7 @@ from backend.domain.session.value_objects import (
     SessionId,
     SessionState,
     TopicId,
+    TopicVersion,
 )
 
 PARTICIPANTS_LIMIT = 2
@@ -21,8 +22,8 @@ PARTICIPANTS_LIMIT = 2
 @dataclass
 class Session:
     id: SessionId
-    topic: TopicId
-    topics_version: str
+    topic_id: TopicId
+    topic_version: TopicVersion
     created_at: int
     state: SessionState = SessionState.WAITING
     participants: dict[ParticipantId, dict] = field(default_factory=dict)
@@ -32,8 +33,8 @@ class Session:
         cls,
         *,
         session_id: SessionId,
-        topic: TopicId,
-        topics_version: str,
+        topic_id: TopicId,
+        topic_version: TopicVersion,
         created_at: int,
         state: SessionState,
         participants: dict[ParticipantId, dict[str, Preference]],
@@ -41,8 +42,8 @@ class Session:
         session = cls.__new__(cls)
 
         session.id = session_id
-        session.topic = topic
-        session.topics_version = topics_version
+        session.topic_id = topic_id
+        session.topic_version = topic_version
         session.created_at = created_at
         session.state = state
         session.participants = participants

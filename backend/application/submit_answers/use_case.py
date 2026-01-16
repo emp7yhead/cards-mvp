@@ -1,9 +1,14 @@
-from backend.application.errors import InvalidQuestion, SessionNotFound
+from backend.application.errors import (
+    InvalidQuestion,
+    SessionNotFound,
+    TopicNotFound,
+)
 from backend.application.ports.result_repository import ResultRepository
 from backend.application.submit_answers.command import SubmitAnswersCommand
 from backend.application.submit_answers.result import SubmitAnswersResult
 from backend.domain.result.calculator import ResultCalculator
 from backend.domain.session.repository import SessionRepository
+from backend.domain.topic.entities import Topic
 from backend.domain.topic.repository import TopicRepository
 
 
@@ -29,8 +34,13 @@ class SubmitAnswersUseCase:
         session = self._session_repo.get(cmd.session_id)
         if not session:
             raise SessionNotFound
-        topic = self._topic_repo.get(session.topic, session.topics_version)
-        self._assert_valid(topic, cmd.answers.get_questions_ids())
+        topic: Topic | None = self._topic_repo.get(
+            session.topic_id,
+            session.topic_version,
+        )
+        if not topic:
+            raise TopicNotFound
+        self._assert_valid(topic, cmd.get_questions_ids())
         session.submit_answers(
             participant_id=cmd.participant_id,
             answers=cmd.answers,

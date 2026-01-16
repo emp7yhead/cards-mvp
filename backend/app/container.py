@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from backend.application.create_session.use_case import CreateSessionUseCase
 from backend.application.get_result.use_case import GetResultUseCase
 from backend.application.get_topic.prewarm_use_case import PrewarmTopicsUseCase
@@ -12,9 +14,11 @@ from backend.infrastructure.redis.sessions_repository import (
 from backend.infrastructure.topics.redis.repository import TopicRedisRepository
 from backend.infrastructure.topics.yaml.repository import TopicYamlRepository
 
+BASE_PATH = Path(__file__).resolve().parent.parent.parent / 'topics_example'
+
 session_repo = RedisSessionRepository()
 result_repo = RedisResultRepository()
-topic_yaml_repo = TopicYamlRepository()
+topic_yaml_repo = TopicYamlRepository(BASE_PATH)
 topic_redis_repo = TopicRedisRepository()
 
 result_calc = SimpleResultsCalculator()
@@ -23,6 +27,7 @@ submit_answers_uc = SubmitAnswersUseCase(
     session_repo=session_repo,
     calc=result_calc,
     result_repo=result_repo,
+    topic_repo=topic_redis_repo,
 )
 
 get_answers_uc = GetResultUseCase(

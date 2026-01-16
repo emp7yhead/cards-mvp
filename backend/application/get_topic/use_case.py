@@ -10,6 +10,7 @@ from backend.infrastructure.topics.redis.repository import TopicRedisRepository
 
 logger = logging.getLogger(__name__)
 
+
 class GetTopicUseCase:
 
     def __init__(
@@ -27,7 +28,6 @@ class GetTopicUseCase:
         try:
             topic = self._redis.get(
                 topic_id=query.topic_id,
-                version=query.version,
             )
         except RedisError as e:
             logger.error("Error while get topic from cache: %s", e)
@@ -36,7 +36,6 @@ class GetTopicUseCase:
 
         topic = self._yaml.get(
             topic_id=query.topic_id,
-            version=query.version,
         )
         if not topic:
             raise TopicNotFound

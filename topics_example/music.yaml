@@ -1,0 +1,8 @@
+id: music
+version: '2026-01-16'
+questions:
+  - rock
+  - jazz
+  - electronic
+  - classical
+  - metal

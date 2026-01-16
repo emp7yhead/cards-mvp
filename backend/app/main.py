@@ -10,7 +10,8 @@ app = FastAPI(default_response_class=ORJSONResponse)
 
 @app.on_event("startup")
 async def prewarm_topics():
-    prewarm_topic_uc.execute()
+    await prewarm_topic_uc.execute()
 
-app.include_router(router=sessions.router)
-app.include_router(router=topics.router)
+
+app.include_router(topics.router)
+app.include_router(sessions.router)

@@ -10,8 +10,10 @@ from backend.application.get_topic.use_case import GetTopicUseCase
 from backend.application.join_session.use_case import JoinSessionUseCase
 from backend.application.submit_answers.use_case import SubmitAnswersUseCase
 from backend.domain.result.calculator import SimpleResultsCalculator
-from backend.infrastructure.redis.result_repository import RedisResultRepository
-from backend.infrastructure.redis.sessions_repository import (
+from backend.infrastructure.sessions.result_repository import (
+    RedisResultRepository,
+)
+from backend.infrastructure.sessions.sessions_repository import (
     RedisSessionRepository,
 )
 from backend.infrastructure.topics.redis.repository import TopicRedisRepository

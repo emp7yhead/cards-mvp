@@ -3,7 +3,7 @@ import orjson
 from backend.domain.result.entities import Result
 from backend.domain.session.value_objects import SessionId
 from backend.infrastructure.redis.client import get_client
-from backend.infrastructure.redis.serializers import (
+from backend.infrastructure.sessions.serializers import (
     result_from_dict,
     result_to_dict,
 )

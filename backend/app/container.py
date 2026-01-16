@@ -6,7 +6,6 @@ from backend.application.get_topic.prewarm_use_case import PrewarmTopicsUseCase
 from backend.application.get_topic.use_case import GetTopicUseCase
 from backend.application.join_session.use_case import JoinSessionUseCase
 from backend.application.submit_answers.use_case import SubmitAnswersUseCase
-from backend.domain.result.calculator import SimpleResultsCalculator
 from backend.infrastructure.redis.result_repository import RedisResultRepository
 from backend.infrastructure.redis.sessions_repository import (
     RedisSessionRepository,
@@ -16,27 +15,18 @@ from backend.infrastructure.topics.yaml.repository import TopicYamlRepository
 
 BASE_PATH = Path(__file__).resolve().parent.parent.parent / 'topics_example'
 
-session_repo = RedisSessionRepository()
-result_repo = RedisResultRepository()
-topic_yaml_repo = TopicYamlRepository(BASE_PATH)
-topic_redis_repo = TopicRedisRepository()
 
-result_calc = SimpleResultsCalculator()
+class Container:
+    session_repo: RedisSessionRepository | None = None
+    result_repo: RedisResultRepository | None = None
+    topic_yaml_repo: TopicYamlRepository | None = None
+    topic_redis_repo: TopicRedisRepository | None = None
 
-submit_answers_uc = SubmitAnswersUseCase(
-    session_repo=session_repo,
-    calc=result_calc,
-    result_repo=result_repo,
-    topic_repo=topic_redis_repo,
-)
+    submit_answers_uc: SubmitAnswersUseCase | None = None
+    get_answers_uc: GetResultUseCase | None = None
+    create_session_uc: CreateSessionUseCase | None = None
+    join_session_uc: JoinSessionUseCase | None = None
+    get_topic_uc: GetTopicUseCase | None = None
+    prewarm_topic_uc: PrewarmTopicsUseCase | None = None
 
-get_answers_uc = GetResultUseCase(
-    result_repo=result_repo,
-)
-
-create_session_uc = CreateSessionUseCase(session_repo=session_repo)
-
-join_session_uc = JoinSessionUseCase(session_repo=session_repo)
-
-get_topic_uc = GetTopicUseCase(topic_yaml_repo, topic_redis_repo)
-prewarm_topic_uc = PrewarmTopicsUseCase(topic_yaml_repo, topic_redis_repo)
+container = Container()

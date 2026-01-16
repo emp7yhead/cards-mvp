@@ -5,8 +5,8 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException
 
 from backend.app.dependencies import (
+    get_answers_uc,
     get_create_session_uc,
-    get_get_answers_uc,
     get_join_session_uc,
     get_submit_answers_uc,
 )
@@ -115,7 +115,7 @@ def submit_answers(
 @router.get('/{session_id}/results')
 def get_results(
     session_id: UUID,
-    uc: Annotated[GetResultUseCase, Depends(get_get_answers_uc)],
+    uc: Annotated[GetResultUseCase, Depends(get_answers_uc)],
 ) -> GetResultResponse:
     query = GetResultQuery(
         session_id=SessionId(str(session_id)),

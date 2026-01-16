@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from fastapi.exceptions import HTTPException
 
-from backend.app.dependencies import get_get_topic_uc
+from backend.app.dependencies import get_topic_uc
 from backend.application.errors import TopicNotFound
 from backend.application.get_topic.query import GetTopicQuery
 from backend.application.get_topic.use_case import GetTopicUseCase
@@ -19,7 +19,7 @@ router = APIRouter(prefix='/topics', tags=['topics'])
 @router.get('/{topic_id}')
 def get_topic(
     topic_id: str,
-    uc: Annotated[GetTopicUseCase, Depends(get_get_topic_uc)],
+    uc: Annotated[GetTopicUseCase, Depends(get_topic_uc)],
 ) -> GetTopicResponse:
     query = GetTopicQuery(
         topic_id=TopicId(str(topic_id)),

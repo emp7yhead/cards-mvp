@@ -1,7 +1,7 @@
 .DEFAULT_GOAL = help
 
 run:
-	uv run uvicorn backend.app.main:app --reload --host 0.0.0.0 --port 5001
+	uv run uvicorn backend.app.main:create_app --lifespan on --factory --reload --host 0.0.0.0 --port 5001
 
 run-tests:  # Run tests
 	uv run python -m pytest -v

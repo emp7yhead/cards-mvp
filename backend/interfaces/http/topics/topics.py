@@ -1,10 +1,8 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
-from fastapi.exceptions import HTTPException
 
 from backend.app.dependencies import get_topic_uc
-from backend.application.errors import TopicNotFound
 from backend.application.get_topic.query import GetTopicQuery
 from backend.application.get_topic.use_case import GetTopicUseCase
 from backend.domain.topic.value_objects import TopicId
@@ -24,13 +22,7 @@ def get_topic(
     query = GetTopicQuery(
         topic_id=TopicId(str(topic_id)),
     )
-    try:
-        topic = uc.execute(query)
-    except TopicNotFound as e:
-        return HTTPException(
-            status_code=404,
-            detail='Topic not found',
-        )
+    topic = uc.execute(query)
     return GetTopicResponse(
         id=topic.id.value,
         version=topic.version.value,

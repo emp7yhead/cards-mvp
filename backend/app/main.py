@@ -3,6 +3,7 @@ from fastapi.responses import ORJSONResponse
 
 from backend.app.lifespan import lifespan
 from backend.interfaces.http.api import setup_routers
+from backend.interfaces.http.exception_handlers import setup_exception_handlers
 
 
 def create_app() -> FastAPI:
@@ -15,6 +16,7 @@ def create_app() -> FastAPI:
     )
 
     setup_routers(app)
+    setup_exception_handlers(app)
     return app
 
 

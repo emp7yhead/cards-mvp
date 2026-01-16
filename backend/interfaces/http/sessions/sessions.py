@@ -2,7 +2,7 @@ from time import time
 from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 
 from backend.app.dependencies import (
     get_answers_uc,
@@ -11,14 +11,12 @@ from backend.app.dependencies import (
     get_submit_answers_uc,
 )
 from backend.application.create_session.use_case import CreateSessionUseCase
-from backend.application.errors import ResultNotFound, SessionNotFound
 from backend.application.get_result.query import GetResultQuery
 from backend.application.get_result.use_case import GetResultUseCase
 from backend.application.join_session.command import JoinSessionCommand
 from backend.application.join_session.use_case import JoinSessionUseCase
 from backend.application.submit_answers.command import SubmitAnswersCommand
 from backend.application.submit_answers.use_case import SubmitAnswersUseCase
-from backend.domain.session.errors import SessionCompleted, UnknownParticipant
 from backend.domain.session.value_objects import (
     ParticipantId,
     Preference,
@@ -69,7 +67,6 @@ async def join_session(
         participant_id=participant_id,
     )
     uc.execute(cmd)
-
     return JoinSessionResponse(
         session_id=session_id,
         participant_id=participant_id.value,
@@ -90,23 +87,7 @@ def submit_answers(
             for question, preference in payload.answers.items()
         },
     )
-    try:
-        res = uc.execute(cmd)
-    except SessionCompleted:
-        return HTTPException(
-            status_code=409,
-            detail='Session alredy completed',
-        )
-    except UnknownParticipant:
-        return HTTPException(
-            status_code=404,
-            detail='Unknown participant',
-        )
-    except SessionNotFound:
-        return HTTPException(
-            status_code=404,
-            detail='Session not found',
-        )
+    res = uc.execute(cmd)
     return SubmitAnswersResponse(
         session_completed=res.session_completed,
     )
@@ -120,13 +101,7 @@ def get_results(
     query = GetResultQuery(
         session_id=SessionId(str(session_id)),
     )
-    try:
-        res = uc.execute(query)
-    except ResultNotFound:
-        return HTTPException(
-            status_code=404,
-            detail='Results not found',
-        )
+    res = uc.execute(query)
     return GetResultResponse(
             session_id=session_id,
             common_questions=res.common_questions,

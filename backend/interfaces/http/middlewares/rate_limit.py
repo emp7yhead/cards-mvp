@@ -1,7 +1,6 @@
 import logging
 from http import HTTPStatus
 
-from redis.exceptions import RedisError
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import JSONResponse
@@ -37,11 +36,15 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
                 limit=limit,
                 window=window,
             )
-        except RedisError as e:
+        except Exception as e:
             logger.error('Rate limit error: %s', e)
             return await call_next(request)
 
         if not is_allowed:
+            logger.warning('Rate limit exceeded', extra={
+                'ip': ip,
+                'path': path,
+            })
             return JSONResponse(
                 status_code=HTTPStatus.TOO_MANY_REQUESTS,
                 content={

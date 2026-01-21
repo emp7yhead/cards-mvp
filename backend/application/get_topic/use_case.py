@@ -25,12 +25,23 @@ class GetTopicUseCase:
         self,
         query: GetTopicQuery,
     ) -> Topic:
+        logger.info(
+            "Get topic started",
+            extra={
+                "topic_id": query.topic_id.value,
+            },
+        )
         try:
             topic = self._redis.get(
                 topic_id=query.topic_id,
             )
         except RedisError as e:
-            logger.error("Error while get topic from cache: %s", e)
+            logger.error(
+                "Error while get topic from cache: %s", e,
+                extra={
+                    'topic_id': query.topic_id.value,
+                },
+            )
         if topic:
             return topic
 
@@ -38,9 +49,26 @@ class GetTopicUseCase:
             topic_id=query.topic_id,
         )
         if not topic:
+            logger.error(
+                "Topic not found",
+                extra={
+                    'topic_id': query.topic_id.value,
+                },
+            )
             raise TopicNotFound
         try:
             self._redis.save(topic)
         except RedisError as e:
-            logger.error("Error while save topic to cache: %s", e)
+            logger.error(
+                "Error while save topic to cache: %s", e,
+                extra={
+                    'topic_id': query.topic_id.value,
+                },
+            )
+        logger.info(
+            "Get topic finished",
+            extra={
+                "topic_id": query.topic_id.value,
+            },
+        )
         return topic

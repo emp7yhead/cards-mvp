@@ -10,6 +10,7 @@ from backend.app.dependencies import (
     get_join_session_uc,
     get_submit_answers_uc,
 )
+from backend.application.create_session.command import CreateSessionCommand
 from backend.application.create_session.use_case import CreateSessionUseCase
 from backend.application.get_result.query import GetResultQuery
 from backend.application.get_result.use_case import GetResultUseCase
@@ -44,14 +45,14 @@ def create_session(
     session_id: SessionId = SessionId.generate()
     participant_id: ParticipantId = ParticipantId.generate()
 
-    uc.execute(
+    cmd = CreateSessionCommand(
         session_id=session_id,
         topic_id=TopicId(payload.topic_id),
         topic_version=TopicVersion(payload.version),
         creator_id=participant_id,
         created_at=int(time()),
     )
-
+    uc.execute(cmd)
     return CreateSessionResponse(
         session_id=session_id.value,
         participant_id=participant_id.value,

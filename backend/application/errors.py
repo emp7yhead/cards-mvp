@@ -25,3 +25,9 @@ class TopicNotFound(ApplicationError):
     code = "TOPIC_NOT_FOUND"
     message = "Topic not found"
     http_status = HTTPStatus.NOT_FOUND
+
+
+class ServiceUnavailable(ApplicationError):
+    code = "SERVICE_UNAVAILABLE"
+    message = "Service unavailable"
+    http_status = HTTPStatus.SERVICE_UNAVAILABLE

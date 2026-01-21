@@ -1,3 +1,5 @@
+import logging
+
 from backend.application.errors import (
     InvalidQuestion,
     SessionNotFound,
@@ -10,6 +12,8 @@ from backend.domain.result.calculator import ResultCalculator
 from backend.domain.session.repository import SessionRepository
 from backend.domain.topic.entities import Topic
 from backend.domain.topic.repository import TopicRepository
+
+logger = logging.getLogger(__name__)
 
 
 class SubmitAnswersUseCase:
@@ -31,6 +35,13 @@ class SubmitAnswersUseCase:
                 raise InvalidQuestion
 
     def execute(self, cmd: SubmitAnswersCommand):
+        logger.info(
+            "Submit answers started",
+            extra={
+                "session_id": cmd.session_id.value,
+                "participant_id": cmd.participant_id.value,
+            },
+        )
         session = self._session_repo.get(cmd.session_id)
         if not session:
             raise SessionNotFound
@@ -39,6 +50,12 @@ class SubmitAnswersUseCase:
             session.topic_version,
         )
         if not topic:
+            logger.error(
+                "Topic not found",
+                extra={
+                    'topic_id': session.topic_id.value,
+                },
+            )
             raise TopicNotFound
         self._assert_valid(topic, cmd.get_questions_ids())
         session.submit_answers(
@@ -52,6 +69,19 @@ class SubmitAnswersUseCase:
                 *session.participants.values(),
             )
             self._result_repo.save(result)
+            logger.info(
+                "Session completed",
+                extra={
+                    "session_id": cmd.session_id.value,
+                },
+            )
+        logger.info(
+            "Submit answers finished",
+            extra={
+                "session_id": cmd.session_id.value,
+                "participant_id": cmd.participant_id.value,
+            },
+        )
         return SubmitAnswersResult(
             session_completed=session.is_completed(),
         )

@@ -2,12 +2,14 @@ from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 
 from backend.app.lifespan import lifespan
+from backend.app.logging.config import setup_logging
 from backend.app.middlewares import setup_middlewares
 from backend.interfaces.http.api import setup_routers
 from backend.interfaces.http.exception_handlers import setup_exception_handlers
 
 
 def create_app() -> FastAPI:
+    setup_logging()
     app = FastAPI(
         title='Cards MVP',
         version='0.0.1',
@@ -16,9 +18,9 @@ def create_app() -> FastAPI:
         default_response_class=ORJSONResponse,
     )
 
+    setup_middlewares(app)
     setup_routers(app)
     setup_exception_handlers(app)
-    setup_middlewares(app)
     return app
 
 

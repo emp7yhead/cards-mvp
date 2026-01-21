@@ -2,7 +2,11 @@ import enum
 from dataclasses import dataclass
 from uuid import uuid4
 
-from backend.domain.topic.value_objects import QuestionId, TopicId, TopicVersion
+from backend.domain.topic.value_objects import (  # noqa: F401
+    QuestionId,
+    TopicId,
+    TopicVersion,
+)
 
 
 @dataclass(frozen=True)

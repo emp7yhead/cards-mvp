@@ -16,7 +16,7 @@ class TopicYamlRepository(TopicRepository):
     def list_all(self) -> list[Topic]:
         topics = []
 
-        for path in self._base_path.glob("*.yaml"):
+        for path in self._base_path.glob('*.yaml'):
             with open(path) as f:
                 data = yaml.safe_load(f)
                 topics.append(TopicYamlSerializer.loads(data))
@@ -28,12 +28,12 @@ class TopicYamlRepository(TopicRepository):
         topic_id: TopicId,
         topic_version: TopicVersion | None = None,
     ) -> Topic | None:
-        path = self._base_path / f"{topic_id.value}.yaml"
+        path = self._base_path / f'{topic_id.value}.yaml'
 
         if not path.exists():
             return None
 
-        with open(path, encoding="utf-8") as f:
+        with open(path, encoding='utf-8') as f:
             data = yaml.safe_load(f)
 
         topic = TopicYamlSerializer.loads(data)

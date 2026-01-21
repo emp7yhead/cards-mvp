@@ -9,9 +9,9 @@ class TopicRedisSerializer:
     @staticmethod
     def dumps(topic: Topic) -> bytes:
         return orjson.dumps({
-            "id": topic.id.value,
-            "version": topic.version.value,
-            "questions": [q.value for q in topic.questions],
+            'id': topic.id.value,
+            'version': topic.version.value,
+            'questions': [q.value for q in topic.questions],
         })
 
     @staticmethod
@@ -19,9 +19,9 @@ class TopicRedisSerializer:
         data = orjson.loads(raw)
 
         return Topic(
-            id=TopicId(data["id"]),
-            version=TopicVersion(data["version"]),
+            id=TopicId(data['id']),
+            version=TopicVersion(data['version']),
             questions=tuple(
-                QuestionId(q) for q in data["questions"]
+                QuestionId(q) for q in data['questions']
             ),
         )

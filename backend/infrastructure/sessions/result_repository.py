@@ -1,9 +1,9 @@
-from backend.application.errors import ServiceUnavailable
 import logging
 
 import orjson
 from redis import RedisError
 
+from backend.application.errors import ServiceUnavailable
 from backend.domain.result.entities import Result
 from backend.domain.session.value_objects import SessionId
 from backend.infrastructure.redis.client import get_client
@@ -21,7 +21,7 @@ class RedisResultRepository:
         self._redis = get_client()
 
     def _key(self, session_id: SessionId) -> str:
-        return f"result:{session_id.value}"
+        return f'result:{session_id.value}'
 
     def save(self, result: Result) -> None:
         key = self._key(result.session_id)
@@ -32,7 +32,7 @@ class RedisResultRepository:
             )
         except RedisError as e:
             logger.error(
-                "Failed to save session results: %s", e,
+                'Failed to save session results: %s', e,
                 extra={
                     'session_id': result.session_id.value,
                 },
@@ -44,7 +44,7 @@ class RedisResultRepository:
             raw = self._redis.get(self._key(session_id))
         except RedisError as e:
             logger.error(
-                "Failed to get session results: %s", e,
+                'Failed to get session results: %s', e,
                 extra={
                     'session_id': session_id.value,
                 },

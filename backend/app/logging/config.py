@@ -4,13 +4,13 @@ from backend.app.logging.extra_fileds_filter import ExtraFieldsFilter
 from backend.app.logging.request_id_filter import RequestIdFilter
 
 LOG_FORMAT = (
-    "%(asctime)s "
-    "[%(levelname)s] "
-    "[request_id=%(request_id)s]"
-    "[session_id=%(session_id)s]"
-    "[topic_id=%(topic_id)s]"
-    "[participant_id=%(participant_id)s]"
-    "%(name)s: %(message)s"
+    '%(asctime)s '
+    '[%(levelname)s] '
+    '[request_id=%(request_id)s]'
+    '[session_id=%(session_id)s]'
+    '[topic_id=%(topic_id)s]'
+    '[participant_id=%(participant_id)s]'
+    '%(name)s: %(message)s'
 )
 
 

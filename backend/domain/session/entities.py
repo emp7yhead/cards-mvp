@@ -38,7 +38,7 @@ class Session:
         created_at: int,
         state: SessionState,
         participants: dict[ParticipantId, dict[str, Preference]],
-    ) -> "Session":
+    ) -> 'Session':
         session = cls.__new__(cls)
 
         session.id = session_id

@@ -1,16 +1,9 @@
-from backend.application.errors import ServiceUnavailable
-from backend.application.create_session.command import CreateSessionCommand
 import logging
 
+from backend.application.create_session.command import CreateSessionCommand
 from backend.application.errors import TopicNotFound
 from backend.domain.session.entities import Session
 from backend.domain.session.repository import SessionRepository
-from backend.domain.session.value_objects import (
-    ParticipantId,
-    SessionId,
-    TopicId,
-    TopicVersion,
-)
 from backend.domain.topic.repository import TopicRepository
 
 logger = logging.getLogger(__name__)
@@ -31,10 +24,10 @@ class CreateSessionUseCase:
         cmd: CreateSessionCommand,
     ) -> None:
         logger.info(
-            "Create session started",
+            'Create session started',
             extra={
-                "session_id": cmd.session_id.value,
-                "topic_id": cmd.topic_id.value,
+                'session_id': cmd.session_id.value,
+                'topic_id': cmd.topic_id.value,
             },
         )
         topic = self._topic_repo.get(
@@ -43,7 +36,7 @@ class CreateSessionUseCase:
         )
         if not topic:
             logger.error(
-                "Topic not found",
+                'Topic not found',
                 extra={
                     'topic_id': cmd.topic_id.value,
                 },
@@ -58,9 +51,9 @@ class CreateSessionUseCase:
         session.join(cmd.creator_id)
         self._session_repo.save(session)
         logger.info(
-            "Create session finished",
+            'Create session finished',
             extra={
-                "session_id": cmd.session_id.value,
-                "topic_id": cmd.topic_id.value,
+                'session_id': cmd.session_id.value,
+                'topic_id': cmd.topic_id.value,
             },
         )

@@ -36,10 +36,10 @@ class SubmitAnswersUseCase:
 
     def execute(self, cmd: SubmitAnswersCommand):
         logger.info(
-            "Submit answers started",
+            'Submit answers started',
             extra={
-                "session_id": cmd.session_id.value,
-                "participant_id": cmd.participant_id.value,
+                'session_id': cmd.session_id.value,
+                'participant_id': cmd.participant_id.value,
             },
         )
         session = self._session_repo.get(cmd.session_id)
@@ -51,7 +51,7 @@ class SubmitAnswersUseCase:
         )
         if not topic:
             logger.error(
-                "Topic not found",
+                'Topic not found',
                 extra={
                     'topic_id': session.topic_id.value,
                 },
@@ -70,16 +70,16 @@ class SubmitAnswersUseCase:
             )
             self._result_repo.save(result)
             logger.info(
-                "Session completed",
+                'Session completed',
                 extra={
-                    "session_id": cmd.session_id.value,
+                    'session_id': cmd.session_id.value,
                 },
             )
         logger.info(
-            "Submit answers finished",
+            'Submit answers finished',
             extra={
-                "session_id": cmd.session_id.value,
-                "participant_id": cmd.participant_id.value,
+                'session_id': cmd.session_id.value,
+                'participant_id': cmd.participant_id.value,
             },
         )
         return SubmitAnswersResult(

@@ -27,7 +27,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
             return await call_next(request)
 
         limit, window = self._limits.get(key_config)
-        ip = request.headers.get("x-forwarded-for", request.client.host)
+        ip = request.headers.get('x-forwarded-for', request.client.host)
         redis_key = f'rate:{key_config}:{ip}'
 
         try:

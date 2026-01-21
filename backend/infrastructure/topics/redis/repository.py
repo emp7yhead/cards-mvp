@@ -12,7 +12,7 @@ class TopicRedisRepository(TopicRepository):
         self._ttl = ttl_seconds
 
     def _key(self, topic_id: TopicId, version: TopicVersion) -> str:
-        return f"topic:{topic_id.value}:{version.value}"
+        return f'topic:{topic_id.value}:{version.value}'
 
     def get(
         self,

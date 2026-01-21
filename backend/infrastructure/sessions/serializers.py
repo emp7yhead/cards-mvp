@@ -12,12 +12,12 @@ from backend.domain.topic.value_objects import QuestionId
 
 def session_to_dict(session: Session) -> dict:
     payload = {
-        "session_id": session.id.value,
-        "topic_id": session.topic_id.value,
-        "topic_version": session.topic_version.value,
-        "created_at": session.created_at,
-        "state": session.state,
-        "participants": {
+        'session_id': session.id.value,
+        'topic_id': session.topic_id.value,
+        'topic_version': session.topic_version.value,
+        'created_at': session.created_at,
+        'state': session.state,
+        'participants': {
             pid.value: {
                 key.value: pref.name
                 for key, pref in answers.items()
@@ -47,17 +47,17 @@ def session_from_dict(data: dict) -> Session:
 
 def result_to_dict(result: Result) -> dict:
     return {
-        "session_id": result.session_id.value,
-        "common_questions": [r.value for r in result.common],
-        "difference_questions": [r.value for r in result.difference],
-        "score": result.score,
+        'session_id': result.session_id.value,
+        'common_questions': [r.value for r in result.common],
+        'difference_questions': [r.value for r in result.difference],
+        'score': result.score,
     }
 
 
 def result_from_dict(data: dict) -> Result:
     return Result(
-        session_id=SessionId(data["session_id"]),
-        common=[QuestionId(qid) for qid in data["common_questions"]],
-        difference=[QuestionId(qid) for qid in data["difference_questions"]],
-        score=data["score"],
+        session_id=SessionId(data['session_id']),
+        common=[QuestionId(qid) for qid in data['common_questions']],
+        difference=[QuestionId(qid) for qid in data['difference_questions']],
+        score=data['score'],
     )

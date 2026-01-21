@@ -59,7 +59,7 @@ def create_session(
     )
 
 
-@router.post("/{session_id}/join")
+@router.post('/{session_id}/join')
 async def join_session(
     session_id: str,
     uc: Annotated[JoinSessionUseCase, Depends(get_join_session_uc)],

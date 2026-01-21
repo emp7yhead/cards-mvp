@@ -16,9 +16,9 @@ def application_error_handler(
     return ORJSONResponse(
         status_code=exc.http_status,
         content={
-            "error": {
-                "code": exc.code,
-                "message": exc.message,
+            'error': {
+                'code': exc.code,
+                'message': exc.message,
             },
         },
     )
@@ -31,9 +31,9 @@ def domain_error_handler(
     return ORJSONResponse(
         status_code=exc.http_status,
         content={
-            "error": {
-                "code": exc.code,
-                "message": exc.message,
+            'error': {
+                'code': exc.code,
+                'message': exc.message,
             },
         },
     )
@@ -41,8 +41,8 @@ def domain_error_handler(
 
 async def unhandled_exception_handler(request, exc):
     logger.exception(
-        "Unhandled exception",
-        extra={"path": request.url.path},
+        'Unhandled exception',
+        extra={'path': request.url.path},
     )
     return ORJSONResponse(status_code=500)
 

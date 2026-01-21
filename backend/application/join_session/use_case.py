@@ -17,10 +17,10 @@ class JoinSessionUseCase:
         cmd: JoinSessionCommand,
     ) -> None:
         logger.info(
-            "Join session started",
+            'Join session started',
             extra={
-                "session_id": cmd.session_id.value,
-                "participant_id": cmd.participant_id.value,
+                'session_id': cmd.session_id.value,
+                'participant_id': cmd.participant_id.value,
             },
         )
         session = self._session_repo.get(cmd.session_id)
@@ -29,9 +29,9 @@ class JoinSessionUseCase:
         session.join(cmd.participant_id)
         self._session_repo.save(session)
         logger.info(
-            "Join session finished",
+            'Join session finished',
             extra={
-                "session_id": cmd.session_id.value,
-                "participant_id": cmd.participant_id.value,
+                'session_id': cmd.session_id.value,
+                'participant_id': cmd.participant_id.value,
             },
         )

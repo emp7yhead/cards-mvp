@@ -13,10 +13,10 @@ class GetResultUseCase:
 
     def execute(self, query: GetResultQuery) -> GetResultResult:
         logger.info(
-            "Get result started",
+            'Get result started',
             extra={
-                "session_id": query.session_id.value,
-                "topic_id": query.topic_id.value,
+                'session_id': query.session_id.value,
+                'topic_id': query.topic_id.value,
             },
         )
         res = self._res_repo.get(query.session_id)
@@ -27,10 +27,10 @@ class GetResultUseCase:
             )
             raise ResultNotFound(query.session_id)
         logger.info(
-            "Get result finished",
+            'Get result finished',
             extra={
-                "session_id": query.session_id.value,
-                "topic_id": query.topic_id.value,
+                'session_id': query.session_id.value,
+                'topic_id': query.topic_id.value,
             },
         )
         return GetResultResult(

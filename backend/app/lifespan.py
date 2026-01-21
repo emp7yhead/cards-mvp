@@ -10,6 +10,9 @@ from backend.application.get_topic.use_case import GetTopicUseCase
 from backend.application.join_session.use_case import JoinSessionUseCase
 from backend.application.submit_answers.use_case import SubmitAnswersUseCase
 from backend.domain.result.calculator import SimpleResultsCalculator
+from backend.infrastructure.rate_limit.redis_rate_limiter import (
+    RedisRateLimiter,
+)
 from backend.infrastructure.sessions.result_repository import (
     RedisResultRepository,
 )
@@ -50,6 +53,8 @@ async def init_container(app: FastAPI):
         container.topic_yaml_repo,
         container.topic_redis_repo,
     )
+
+    container.redis_rate_limiter = RedisRateLimiter()
 
     await container.prewarm_topic_uc.execute()
 

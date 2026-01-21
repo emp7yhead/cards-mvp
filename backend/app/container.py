@@ -6,6 +6,9 @@ from backend.application.get_topic.prewarm_use_case import PrewarmTopicsUseCase
 from backend.application.get_topic.use_case import GetTopicUseCase
 from backend.application.join_session.use_case import JoinSessionUseCase
 from backend.application.submit_answers.use_case import SubmitAnswersUseCase
+from backend.infrastructure.rate_limit.redis_rate_limiter import (
+    RedisRateLimiter,
+)
 from backend.infrastructure.sessions.result_repository import (
     RedisResultRepository,
 )
@@ -30,5 +33,7 @@ class Container:
     join_session_uc: JoinSessionUseCase | None = None
     get_topic_uc: GetTopicUseCase | None = None
     prewarm_topic_uc: PrewarmTopicsUseCase | None = None
+
+    redis_rate_limiter: RedisRateLimiter | None = None
 
 container = Container()

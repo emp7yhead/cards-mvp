@@ -14,7 +14,7 @@ class SessionCompleted(SessionError):
 class SessionExpired(SessionError):
     code = "SESSION_EXPIRED"
     message = "Session expired"
-    http_status = HTTPStatus.CONFLICT
+    http_status = HTTPStatus.GONE
 
 
 class UnknownParticipant(SessionError):
@@ -32,4 +32,4 @@ class TooManyParticipants(SessionError):
 class ParticipantAlreadyAnswered(SessionError):
     code = "PARTICIPANT_ALREADY_ANSWERED"
     message = "Participant alredy answered"
-    http_status = HTTPStatus.UNPROCESSABLE_ENTITY
+    http_status = HTTPStatus.CONFLICT

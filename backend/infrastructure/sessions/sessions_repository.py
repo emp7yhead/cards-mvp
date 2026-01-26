@@ -1,16 +1,12 @@
 import logging
 
-import orjson
 from redis import RedisError
 
 from backend.application.errors import ServiceUnavailable
 from backend.domain.session.entities import Session
 from backend.domain.session.value_objects import SessionId
 from backend.infrastructure.redis.client import get_client
-from backend.infrastructure.sessions.serializers import (
-    session_from_dict,
-    session_to_dict,
-)
+from backend.infrastructure.sessions.serializers import SessionRedisSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -38,11 +34,11 @@ class RedisSessionRepository:
             raise ServiceUnavailable from e
         if not raw:
             return None
-        return session_from_dict(orjson.loads(raw))
+        return SessionRedisSerializer.loads(raw)
 
     def save(self, session: Session) -> None:
         key = self._key(session.id)
-        data = orjson.dumps(session_to_dict(session))
+        data = SessionRedisSerializer.dumps(session)
         try:
             self._redis.set(
                 key,
